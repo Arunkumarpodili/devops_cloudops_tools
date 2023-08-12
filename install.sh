@@ -128,7 +128,7 @@ function install_terragrunt () {
 
 function install_velero () {
     echo "Installing velero"
-    curl -sLo velero.tar.gz https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero_${VELERO_VERSION}_linux_amd64.tar.gz
+    curl -sLo velero.tar.gz https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero-v${VELERO_VERSION}-linux-amd64.tar.gz
     tar -xzvf velero.tar.gz
     sudo install -o root -g root -m 0755 velero /usr/local/bin/velero
 }
