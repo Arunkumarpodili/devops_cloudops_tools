@@ -12,3 +12,20 @@ curl -sSL https://raw.githubusercontent.com/srajasimman/devops_cloudops_tools/ma
 wget -O /tmp/install.sh https://raw.githubusercontent.com/srajasimman/devops_cloudops_tools/main/install.sh && sudo bash /tmp/install.sh
 
 ```
+## Tools List
+
+- docker
+- lazydocker
+- kubectl
+- helm
+- minikube
+- k9s
+- stern
+- popeye
+- terraform
+- terragrunt
+- velero
+- aws-cli
+- azure-cli
+- gcp-cli
+- oci-cli
