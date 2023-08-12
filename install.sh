@@ -198,49 +198,49 @@ function main_menu () {
     read -p "Enter your choice: " choice
     case $choice in
         1)
-            install_docker
+            install_docker && main_menu
             ;;
         2)
-            install_lazydocker
+            install_lazydocker && main_menu
             ;;
         3)
-            install_kubectl
+            install_kubectl && main_menu
             ;;
         4)
-            install_helm
+            install_helm && main_menu
             ;;
         5)
-            install_minikube
+            install_minikube && main_menu
             ;;
         6)
-            install_k9s
+            install_k9s && main_menu
             ;;
         7)
-            install_stern
+            install_stern && main_menu
             ;;
         8)
-            install_popeye
+            install_popeye && main_menu
             ;;
         9)
-            install_terraform
+            install_terraform && main_menu
             ;;
         10)
-            install_terragrunt
+            install_terragrunt && main_menu
             ;;
         11)
-            install_velero
+            install_velero && main_menu
             ;;
         12)
-            install_awscli
+            install_awscli && main_menu
             ;;
         13)
-            install_azure_cli
+            install_azure_cli && main_menu
             ;;
         14)
-            install_gcp_cli
+            install_gcp_cli && main_menu
             ;;
         15)
-            install_oci_cli
+            install_oci_cli && main_menu
             ;;
         ALL)
             install_all
