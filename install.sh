@@ -8,6 +8,7 @@ export LAZYDOCKER_VERSION="0.20.0"
 export POPEYE_VERSION="0.11.1"
 export TERRAFORM_VERSION="1.5.5"
 export TERRAGRUNT_VERSION="0.49.1"
+export VELERO_VERSION="1.11.1"
 
 if [ "$EUID" -ne 0 ]
     then echo "Please run as root"
@@ -26,7 +27,6 @@ function install_docker () {
     sudo systemctl enable docker
     sudo usermod -aG docker "$USER"
     echo "docker and docker-compose Installation Done"
-    main_menu
 }
 
 function install_kubectl () {
@@ -35,7 +35,6 @@ function install_kubectl () {
     curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256" && \
     echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check && \
     sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-    main_menu
 }
 
 function install_helm () {
@@ -43,14 +42,12 @@ function install_helm () {
     wget -O helm-linux-amd64.tar.gz https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz
     tar -zxvf helm-linux-amd64.tar.gz
     sudo install -o root -g root -m 0755 linux-amd64/helm /usr/local/bin/helm
-    main_menu
 }
 
 function install_minikube () {
     echo "Installing minikube"
     curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
     sudo install -o root -g root -m 0755 minikube-linux-amd64 /usr/local/bin/minikube
-    main_menu
 }
 
 function install_k9s () {
@@ -64,7 +61,6 @@ function install_k9s () {
     wget https://github.com/derailed/k9s/releases/download/v${K9S_VERSION}/${K9S_RELEASE_FILE_NAME}
     tar -xzvf ${K9S_RELEASE_FILE_NAME} 
     sudo install -o root -g root -m 0755 k9s /usr/local/bin/k9s
-    main_menu
 }
 
 function install_stern () {
@@ -76,7 +72,6 @@ function install_stern () {
     tar -xzvf stern_${STERN_VERSION}_linux_amd64.tar.gz 
     rm -rf stern_${STERN_VERSION}_linux_amd64.tar.gz
     sudo install -o root -g root -m 0755 stern /usr/local/bin/stern
-    main_menu
 }
 
 function install_lazydocker () {
@@ -88,7 +83,6 @@ function install_lazydocker () {
     tar -xzvf lazydocker_${LAZYDOCKER_VERSION}_Linux_x86_64.tar.gz 
     rm -rf lazydocker_${LAZYDOCKER_VERSION}_Linux_x86_64.tar.gz
     sudo install -o root -g root -m 0755 lazydocker /usr/local/bin/lazydocker
-    main_menu
 }
 
 function install_popeye () {
@@ -100,7 +94,6 @@ function install_popeye () {
     tar -xzvf popeye_Linux_x86_64.tar.gz 
     rm -rf popeye_Linux_x86_64.tar.gz
     sudo install -o root -g root -m 0755 popeye /usr/local/bin/popeye
-    main_menu
 }
 
 function install_terraform () {
@@ -111,7 +104,6 @@ function install_terraform () {
     wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
     unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
     sudo install -o root -g root -m 0755 terraform /usr/local/bin/terraform
-    main_menu
 }
 
 function install_terragrunt () {
@@ -121,14 +113,54 @@ function install_terragrunt () {
     fi
     wget https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_linux_amd64
     sudo install -o root -g root -m 0755 terragrunt_linux_amd64 /usr/local/bin/terragrunt
-    main_menu
 }
 
-# TODO: Add more tools
-# awscli
-# azure-cli
-# gcp-cli
-# oci-cli
+function install_velero () {
+    echo "Installing velero"
+    curl -sLo velero.tar.gz https://github.com/vmware-tanzu/velero/releases/download/v${VELERO_VERSION}/velero_${VELERO_VERSION}_linux_amd64.tar.gz
+    tar -xzvf velero.tar.gz
+    sudo install -o root -g root -m 0755 velero /usr/local/bin/velero
+}
+
+function install_awscli () {
+    echo "Installing awscli"
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
+}
+
+function install_azure_cli () {
+    echo "Installing azure-cli"
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+}
+
+function install_gcp_cli () {
+    echo "Installing gcp-cli"
+    curl -fsSL https://sdk.cloud.google.com | bash
+}
+
+function install_oci_cli () {
+    echo "Installing oci-cli"
+    curl -sL https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh | sh
+}
+
+function install_all () {
+    install_docker
+    install_lazydocker
+    install_kubectl
+    install_helm
+    install_minikube
+    install_k9s
+    install_stern
+    install_popeye
+    install_terraform
+    install_terragrunt
+    install_velero
+    install_awscli
+    install_azure_cli
+    install_gcp_cli
+    install_oci_cli
+}
 
 function main_menu () {
 
@@ -145,6 +177,11 @@ function main_menu () {
     echo "|  8 | Install popeye      |"
     echo "|  9 | Install terraform   |"
     echo "| 10 | Install terragrunt  |"
+    echo "| 11 | Install velero      |"
+    echo "| 12 | Install aws-cli     |"
+    echo "| 13 | Install azure-cli   |"
+    echo "| 14 | Install gcp-cli     |"
+    echo "| 15 | Install oci-cli     |"
     echo "|  0 | exit                |"
     echo "+-----+---------------------+"
     read -p "Enter your choice: " choice
@@ -178,6 +215,24 @@ function main_menu () {
             ;;
         10)
             install_terragrunt
+            ;;
+        11)
+            install_velero
+            ;;
+        12)
+            install_awscli
+            ;;
+        13)
+            install_azure_cli
+            ;;
+        14)
+            install_gcp_cli
+            ;;
+        15)
+            install_oci_cli
+            ;;
+        ALL)
+            install_all
             ;;
         0)
         exit
