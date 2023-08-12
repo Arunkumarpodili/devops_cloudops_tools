@@ -27,7 +27,7 @@ sudo apt-get install -y \
     wget \
     unzip \
     tar \
-    sudo
+    sudo && clear
 
 function install_docker () {
     echo "Installing docker and docker-compose"
